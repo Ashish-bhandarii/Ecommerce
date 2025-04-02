@@ -32,8 +32,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        
-        // dd($request);
+
         Category::create([
             'name'=> $request->name,
             'description' => $request->description,
@@ -56,7 +55,13 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::find($id);
+
+        if($category){
+            return view('categories.edit', compact('category'));
+        }
+
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -64,7 +69,18 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $category = Category::find($id);
+
+        if($category){
+            $category->update([
+                'name'=> $request->name,
+                'description' => $request->description,
+            ]);
+        }
+
+        $categories = Category::all();
+        
+        return view('categories.index', compact('categories'));
     }
 
     /**
